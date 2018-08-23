@@ -29,6 +29,11 @@
 
       <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">{{$t('login.logIn')}}</el-button>
     </el-form>
+    <div class="login-footer">
+      <p>版权所有：九如科技有限公司</p>
+      <p>建议浏览器：IE10以上、360，chrome</p>
+      <p>技术支持：九如科技有限公司 联系电话：13852980183</p>
+    </div>
   </div>
 </template>
 
@@ -177,7 +182,8 @@ $light_gray:#eee;
   position: fixed;
   height: 100%;
   width: 100%;
-  background-color: $bg;
+  background: url("../../imgs/bg_login.png") no-repeat center center;
+  background-size: 100% 100%;
   .login-form {
     position: absolute;
     left: 0;
@@ -235,6 +241,14 @@ $light_gray:#eee;
     position: absolute;
     right: 35px;
     bottom: 28px;
+  }
+  .login-footer{
+    position: absolute;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+    color: #FFFFFF;
+    text-align: center;
   }
 }
 </style>

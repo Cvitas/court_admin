@@ -1,6 +1,7 @@
 export default {
   route: {
     dashboard: '首页',
+    management: '系统管理',
     introduction: '简述',
     documentation: '文档',
     guide: '引导页',
@@ -37,6 +38,10 @@ export default {
     'menu1-3': '菜单1-3',
     menu2: '菜单2',
     Table: 'Table',
+    user: '用户管理',
+    role: '角色控制',
+    action: '权限管理',
+    actionGroup: '菜单管理',
     dynamicTable: '动态Table',
     dragTable: '拖拽Table',
     inlineEditTable: 'Table内编辑',
@@ -70,7 +75,7 @@ export default {
     theme: '换肤'
   },
   login: {
-    title: '系统登录',
+    title: '智慧法院系统登录',
     logIn: '登录',
     username: '账号',
     password: '密码',
@@ -104,7 +109,7 @@ export default {
     dynamicTips2: '不固定表头, 按照点击顺序排序',
     dragTips1: '默认顺序',
     dragTips2: '拖拽后顺序',
-    title: '标题',
+    title: '用户名',
     importance: '重要性',
     type: '类型',
     remark: '点评',
@@ -112,18 +117,21 @@ export default {
     add: '添加',
     export: '导出',
     reviewer: '审核人',
-    id: '序号',
+    id: 'ID',
     date: '时间',
     author: '作者',
     readings: '阅读数',
     status: '状态',
     actions: '操作',
     edit: '编辑',
-    publish: '发布',
+    publish: '停用',
     draft: '草稿',
     delete: '删除',
     cancel: '取 消',
-    confirm: '确 定'
+    confirm: '确 定',
+    username: '用户名',
+    userMail: '用户邮件',
+    userPhone: '用户电话'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',

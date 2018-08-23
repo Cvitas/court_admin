@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.BASE_API, // api的base_url
+  // baseURL: process.env.BASE_API, // api的base_url
   timeout: 5000 // request timeout
 })
 
@@ -31,7 +31,6 @@ service.interceptors.response.use(
    * 如想通过xmlhttprequest来状态码标识 逻辑可写在下面error中
    * 以下代码均为样例，请结合自生需求加以修改，若不需要，则可删除
    */
-  response => response,
   response => {
     const res = response.data
     if (res.code !== 200) {

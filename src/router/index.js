@@ -182,7 +182,24 @@ export const asyncRouterMap = [
       { path: 'complex-table', component: () => import('@/views/table/complexTable'), name: 'complexTable', meta: { title: 'complexTable' }}
     ]
   },
-
+  {
+    path: '/management',
+    component: Layout,
+    redirect: '/table/complex-table',
+    name: 'management',
+    meta: {
+      title: 'management',
+      icon: 'table'
+    },
+    children: [
+      // { path: 'dynamic-table', component: () => import('@/views/management/dynamicTable/index'), name: 'user', meta: { title: 'user' }},
+      // { path: 'drag-table', component: () => import('@/views/management/dragTable'), name: 'role', meta: { title: 'role' }},
+      // { path: 'inline-edit-table', component: () => import('@/views/management/inlineEditTable'), name: 'action', meta: { title: 'action' }},
+      // { path: 'tree-table', component: () => import('@/views/management/treeTable/treeTable'), name: 'actionGroup', meta: { title: 'actionGroup' }},
+      // { path: 'custom-tree-table', component: () => import('@/views/management/treeTable/customTreeTable'), name: 'customTreeTableDemo', meta: { title: 'customTreeTable' }},
+      { path: 'complex-table', component: () => import('@/views/management/complexTable'), name: 'user', meta: { title: 'user' }}
+    ]
+  },
   {
     path: '/example',
     component: Layout,
