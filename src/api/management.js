@@ -9,7 +9,7 @@ export function getUsers(query) {
 }
 export function updateUsers(query) {
   return request({
-    url: '/cms/User/LoadUsers',
+    url: '/cms/user/update',
     method: 'post',
     params: query
   })
@@ -52,6 +52,20 @@ export function deleteRole(query) {
 export function getActions(query) {
   return request({
     url: '/cms/action/Loadactions',
+    method: 'post',
+    params: query
+  })
+}
+export function addAction(data) {
+  return request({
+    url: '/cms/action/AddAction',
+    method: 'post',
+    data
+  })
+}
+export function deleteActions(query) {
+  return request({
+    url: '/cms/action/DeleteActions',
     method: 'post',
     params: query
   })

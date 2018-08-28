@@ -143,10 +143,11 @@ export default {
     rolename: '职位名称',
     role_des: '职位说明',
     groupname: '权限组名称',
-    grouptype: '权限组',
+    grouptype: '权限组类型',
     groupsort: '排序位',
     group_des: '菜单说明',
     actionname: '权限名称',
+    actiontype: '权限类型',
     actionurl: '权限URL'
 
   },

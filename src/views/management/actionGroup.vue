@@ -13,7 +13,7 @@
     </div>
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" border fit highlight-current-row
-              style="width: 100%;min-height:1000px;">
+              style="width: 100%;min-height:550px;">
       <el-table-column align="center" :label="$t('table.id')" width="65">
         <template slot-scope="scope">
           <span>{{scope.row.Id}}</span>
@@ -104,12 +104,11 @@
         listLoading: true,
         listQuery: {
           page: 1,
-          rows: 20,
+          rows: 10,
           GroupName: '',
-          GroupType: null,
+          GroupType: null
         },
         groupOptions: [{ label: '菜单权限组', key: 1 }, { label: '接口权限组', key: 0 }],
-        showReviewer: false,
         temp: {
           Id: '',
           GroupName: '',
@@ -159,9 +158,9 @@
         this.getList()
       },
       handleModifyStatus(row, status) {
-        switch(status){
+        switch (status) {
           case 'deleted':
-            this.handleDelete(row);
+            this.handleDelete(row)
             break
         }
       },
@@ -235,7 +234,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          deleteActionGroups({ids:row.Id}).then((data) => {
+          deleteActionGroups({ ids: row.Id }).then((data) => {
             this.$notify({
               title: '成功',
               message: '删除成功',

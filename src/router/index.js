@@ -39,7 +39,8 @@ export const constantRouterMap = [
       name: 'dashboard',
       meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
     }]
-  }//,
+  }
+  // ,
   // {
   //   path: '/documentation',
   //   component: Layout,

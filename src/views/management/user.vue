@@ -9,7 +9,7 @@
     </div>
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" border fit highlight-current-row
-      style="width: 100%;min-height:1000px;">
+      style="width: 100%;min-height:550px;">
       <el-table-column align="center" :label="$t('table.id')" width="65">
         <template slot-scope="scope">
           <span>{{scope.row.Id}}</span>
@@ -53,13 +53,13 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="80px" style='width: 400px; margin-left:50px;'>
-        <el-form-item :label="$t('table.loginname')" prop="LoginName">
+        <el-form-item v-if="dialogStatus=='create'"  :label="$t('table.loginname')" prop="LoginName">
           <el-input v-model="temp.LoginName" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('table.loginpassword')" prop="Password">
+        <el-form-item v-if="dialogStatus=='create'"  :label="$t('table.loginpassword')" prop="Password">
           <el-input type="password" v-model="temp.Password" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('table.surePassword')" prop="surePassword">
+        <el-form-item v-if="dialogStatus=='create'"  :label="$t('table.surePassword')" prop="surePassword">
           <el-input type="password" v-model="temp.surePassword" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item :label="$t('table.username')" prop="UserName">
@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import { getUsers, addUsers, deleteUsers, updateArticle } from '@/api/management'
+import { getUsers, addUsers, deleteUsers, updateUsers } from '@/api/management'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 
@@ -129,7 +129,7 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        rows: 20,
+        rows: 10,
         UserName: ''
       },
       sexOptions: [{ label: '男', key: 1 }, { label: '女', key: 0 }],
@@ -223,16 +223,11 @@ export default {
       this.getList()
     },
     handleModifyStatus(row, status) {
-      switch(status){
+      switch (status) {
         case 'deleted':
-          this.handleDelete(row);
+          this.handleDelete(row)
           break
       }
-      // this.$message({
-      //   message: '操作成功',
-      //   type: 'success'
-      // })
-      // row.status = status
     },
     resetTemp() {
       this.temp = {
@@ -286,8 +281,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
+          updateUsers(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v)
@@ -312,7 +306,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteUsers({ids:row.Id}).then((data) => {
+        deleteUsers({ ids: row.Id }).then((data) => {
           this.$notify({
             title: '成功',
             message: '删除成功',
