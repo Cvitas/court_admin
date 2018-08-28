@@ -159,8 +159,9 @@ export default {
         height: 47px;
         caret-color: $cursor;
         &:-webkit-autofill {
-          -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
-          -webkit-text-fill-color: $cursor !important;
+          background-color: rgb(255, 152, 104) !important;
+          background-image: none;
+          color: #000;
         }
       }
     }
@@ -191,6 +192,8 @@ $light_gray:#eee;
     width: 520px;
     padding: 35px 35px 15px 35px;
     margin: 120px auto;
+    background: rgba(0,0,0,0.3);
+    border-radius: 5px;
   }
   .tips {
     font-size: 14px;

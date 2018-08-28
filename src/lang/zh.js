@@ -129,9 +129,26 @@ export default {
     delete: '删除',
     cancel: '取 消',
     confirm: '确 定',
+    loginname: '登录名',
+    loginpassword: '登录密码',
+    surePassword: '确认密码',
     username: '用户名',
     userMail: '用户邮件',
-    userPhone: '用户电话'
+    userPhone: '用户电话',
+    userGender: '性别',
+    birthday: '出生日期',
+    Wechat: '微信',
+    QQNumber: 'QQ号码',
+    Job: '职位',
+    rolename: '职位名称',
+    role_des: '职位说明',
+    groupname: '权限组名称',
+    grouptype: '权限组',
+    groupsort: '排序位',
+    group_des: '菜单说明',
+    actionname: '权限名称',
+    actionurl: '权限URL'
+
   },
   errorLog: {
     tips: '请点击右上角bug小图标',

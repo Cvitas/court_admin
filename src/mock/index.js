@@ -14,7 +14,7 @@ Mock.mock(/\/login\/logout/, 'post', loginAPI.logout)
 Mock.mock(/\/user\/info\.*/, 'get', loginAPI.getUserInfo)
 
 // 文章相关
-// Mock.mock(/\/article\/list/, 'get', articleAPI.getList)
+Mock.mock(/\/article\/list/, 'get', articleAPI.getList)
 Mock.mock(/\/article\/detail/, 'get', articleAPI.getArticle)
 Mock.mock(/\/article\/pv/, 'get', articleAPI.getPv)
 Mock.mock(/\/article\/create/, 'post', articleAPI.createArticle)
