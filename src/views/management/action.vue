@@ -84,7 +84,7 @@
 </template>
 
 <script>
-  import { getActions, addAction, deleteActions, updateArticle } from '@/api/management'
+  import { getActions, addAction, deleteActions, updateAction } from '@/api/management'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
 
@@ -204,7 +204,7 @@
           if (valid) {
             const tempData = Object.assign({}, this.temp)
             tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-            updateArticle(tempData).then(() => {
+            updateAction(tempData).then(() => {
               for (const v of this.list) {
                 if (v.id === this.temp.id) {
                   const index = this.list.indexOf(v)

@@ -101,16 +101,16 @@ export const asyncRouterMap = [
   //   }]
   // },
   //
-  // {
-  //   path: '/icon',
-  //   component: Layout,
-  //   children: [{
-  //     path: 'index',
-  //     component: () => import('@/views/svg-icons/index'),
-  //     name: 'icons',
-  //     meta: { title: 'icons', icon: 'icon', noCache: true }
-  //   }]
-  // },
+  {
+    path: '/icon',
+    component: Layout,
+    children: [{
+      path: 'index',
+      component: () => import('@/views/svg-icons/index'),
+      name: 'icons',
+      meta: { title: 'icons', icon: 'icon', noCache: true }
+    }]
+  },
 
   // {
   //   path: '/components',
@@ -154,35 +154,35 @@ export const asyncRouterMap = [
   //   ]
   // },
   //
-  // {
-  //   path: '/tab',
-  //   component: Layout,
-  //   children: [{
-  //     path: 'index',
-  //     component: () => import('@/views/tab/index'),
-  //     name: 'tab',
-  //     meta: { title: 'tab', icon: 'tab' }
-  //   }]
-  // },
-  //
-  // {
-  //   path: '/table',
-  //   component: Layout,
-  //   redirect: '/table/complex-table',
-  //   name: 'table',
-  //   meta: {
-  //     title: 'Table',
-  //     icon: 'table'
-  //   },
-  //   children: [
-  //     { path: 'dynamic-table', component: () => import('@/views/table/dynamicTable/index'), name: 'dynamicTable', meta: { title: 'dynamicTable' }},
-  //     { path: 'drag-table', component: () => import('@/views/table/dragTable'), name: 'dragTable', meta: { title: 'dragTable' }},
-  //     { path: 'inline-edit-table', component: () => import('@/views/table/inlineEditTable'), name: 'inlineEditTable', meta: { title: 'inlineEditTable' }},
-  //     { path: 'tree-table', component: () => import('@/views/table/treeTable/treeTable'), name: 'treeTableDemo', meta: { title: 'treeTable' }},
-  //     { path: 'custom-tree-table', component: () => import('@/views/table/treeTable/customTreeTable'), name: 'customTreeTableDemo', meta: { title: 'customTreeTable' }},
-  //     { path: 'complex-table', component: () => import('@/views/table/complexTable'), name: 'complexTable', meta: { title: 'complexTable' }}
-  //   ]
-  // },
+  {
+    path: '/tab',
+    component: Layout,
+    children: [{
+      path: 'index',
+      component: () => import('@/views/tab/index'),
+      name: 'tab',
+      meta: { title: 'tab', icon: 'tab' }
+    }]
+  },
+
+  {
+    path: '/table',
+    component: Layout,
+    redirect: '/table/complex-table',
+    name: 'table',
+    meta: {
+      title: 'Table',
+      icon: 'table'
+    },
+    children: [
+      { path: 'dynamic-table', component: () => import('@/views/table/dynamicTable/index'), name: 'dynamicTable', meta: { title: 'dynamicTable' }},
+      { path: 'drag-table', component: () => import('@/views/table/dragTable'), name: 'dragTable', meta: { title: 'dragTable' }},
+      { path: 'inline-edit-table', component: () => import('@/views/table/inlineEditTable'), name: 'inlineEditTable', meta: { title: 'inlineEditTable' }},
+      { path: 'tree-table', component: () => import('@/views/table/treeTable/treeTable'), name: 'treeTableDemo', meta: { title: 'treeTable' }},
+      { path: 'custom-tree-table', component: () => import('@/views/table/treeTable/customTreeTable'), name: 'customTreeTableDemo', meta: { title: 'customTreeTable' }},
+      { path: 'complex-table', component: () => import('@/views/table/complexTable'), name: 'complexTable', meta: { title: 'complexTable' }}
+    ]
+  },
   {
     path: '/management',
     component: Layout,

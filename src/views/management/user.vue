@@ -38,7 +38,7 @@
       <el-table-column align="center" :label="$t('table.actions')" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('table.edit')}}</el-button>
-          <el-button v-if="scope.row.status!='published'" size="mini" type="success" @click="handleModifyStatus(scope.row,'published')">{{$t('table.publish')}}
+          <el-button v-if="scope.row.status!='published'" size="mini" type="success" @click="handleModifyStatus(scope.row,'bind')">{{$t('table.bind')}}
           </el-button>
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{$t('table.delete')}}
           </el-button>
@@ -98,13 +98,35 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="Reading statistics" :visible.sync="dialogPvVisible">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel"> </el-table-column>
-        <el-table-column prop="pv" label="Pv"> </el-table-column>
-      </el-table>
+    <el-dialog :title="'用户绑定:'+temp.UserName" :visible.sync="dialogBindVisible">
+      <el-tabs style='width: 100%' v-model="activeName" type="border-card">
+        <el-tab-pane v-for="item in bindOptions" :label="item.label" :key='item.key' :name="item.key">
+          <el-table ref="multipleTable1" :key='item.key' v-if="item.key == '1'" :data="roleList" v-loading="listBindLoading" border fit highlight-current-row
+                    style="width: 100%;min-height:300px;">
+            <el-table-column
+              type="selection"
+              width="55">
+            </el-table-column>
+            <el-table-column align="center" :label="$t('table.id')" width="65">
+              <template slot-scope="scope">
+                <span>{{scope.row.Id}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column min-width="110px" align="center" :label="$t('table.rolename')">
+              <template slot-scope="scope">
+                <span>{{scope.row.RoleName}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column min-width="110px" align="center" :label="$t('table.role_des')">
+              <template slot-scope="scope">
+                <span>{{scope.row.role_des || "职位说明"}}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+      </el-tabs>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">{{$t('table.confirm')}}</el-button>
+        <el-button type="primary" @click="dialogBindVisible = false">{{$t('table.bind')}}</el-button>
       </span>
     </el-dialog>
 
@@ -112,7 +134,7 @@
 </template>
 
 <script>
-import { getUsers, addUsers, deleteUsers, updateUsers } from '@/api/management'
+import { getUsers, addUsers, deleteUsers, updateUsers, getAllRoles, getExistRoleIds } from '@/api/management'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 
@@ -125,15 +147,23 @@ export default {
     return {
       tableKey: 0,
       list: null,
+      roleList: null,
+      actionList: null,
+      actionGroupList: null,
       total: null,
+      bindTotal: null,
       listLoading: true,
+      listBindLoading: true,
       listQuery: {
         page: 1,
         rows: 10,
         UserName: ''
       },
       sexOptions: [{ label: '男', key: 1 }, { label: '女', key: 0 }],
-      statusOptions: ['published', 'draft', 'deleted'],
+      bindOptions: [{ label: '绑定角色', key: '1' },
+                      { label: '绑定菜单', key: '2'},
+                      { label: '绑定权限', key: '3' }],
+      activeName: '1',
       showReviewer: false,
       temp: {
         Id: '',
@@ -155,7 +185,7 @@ export default {
         update: '编辑用户',
         create: '添加用户'
       },
-      dialogPvVisible: false,
+      dialogBindVisible: false,
       pvData: [],
       rules: {
         LoginName: [{ required: true, message: '必填项', trigger: 'blur' }],
@@ -185,6 +215,24 @@ export default {
           this.listLoading = false
         }, 1.5 * 1000)
       })
+    },
+    getBindList(row){
+      this.listBindLoading = true
+      switch (this.activeName) {
+        case "1" :
+          getAllRoles().then(response => {
+            this.roleList = response.data.result.rows
+            this.bindTotal = response.data.result.total
+            this.listBindLoading = false
+            getExistRoleIds({ id: row.Id}).then(response => {
+            })
+          })
+          break
+        case "2" :
+          break
+        case "3" :
+          break
+      }
     },
     validPassword(rule, value, callback) {
       if (value === '') {
@@ -226,6 +274,11 @@ export default {
       switch (status) {
         case 'deleted':
           this.handleDelete(row)
+          break
+        case 'bind':
+          this.temp = Object.assign({}, row)
+          this.dialogBindVisible = true
+          this.getBindList(row)
           break
       }
     },

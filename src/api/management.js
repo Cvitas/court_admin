@@ -7,11 +7,11 @@ export function getUsers(query) {
     params: query
   })
 }
-export function updateUsers(query) {
+export function updateUsers(data) {
   return request({
     url: '/cms/user/update',
     method: 'post',
-    params: query
+    data
   })
 }
 export function addUsers(data) {
@@ -24,6 +24,26 @@ export function addUsers(data) {
 export function deleteUsers(query) {
   return request({
     url: '/cms/user/DeleteUsers',
+    method: 'post',
+    params: query
+  })
+}
+export function getAllRoles() {
+  return request({
+    url: '/cms/user/GetAllRoles',
+    method: 'post'
+  })
+}
+export function getExistRoleIds(query) {
+  return request({
+    url: '/cms/user/GetExistRoleIds',
+    method: 'post',
+    params: query
+  })
+}
+export function setRole(query) {
+  return request({
+    url: '/cms/user/SetRole',
     method: 'post',
     params: query
   })
@@ -49,6 +69,13 @@ export function deleteRole(query) {
     params: query
   })
 }
+export function updateRole(data) {
+  return request({
+    url: '/cms/role/UpdateRole',
+    method: 'post',
+    data
+  })
+}
 export function getActions(query) {
   return request({
     url: '/cms/action/Loadactions',
@@ -59,6 +86,13 @@ export function getActions(query) {
 export function addAction(data) {
   return request({
     url: '/cms/action/AddAction',
+    method: 'post',
+    data
+  })
+}
+export function updateAction(data) {
+  return request({
+    url: '/cms/action/Update',
     method: 'post',
     data
   })
@@ -80,6 +114,13 @@ export function getActionGroups(query) {
 export function addActionGroup(data) {
   return request({
     url: '/cms/actiongroup/AddGroup',
+    method: 'post',
+    data
+  })
+}
+export function updateActionGroups(data) {
+  return request({
+    url: '/cms/actiongroup/UpdateActionGroups',
     method: 'post',
     data
   })
