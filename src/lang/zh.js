@@ -75,7 +75,7 @@ export default {
     theme: '换肤'
   },
   login: {
-    title: '智慧法院系统登录',
+    title: '广元市中级人民法院',
     logIn: '登录',
     username: '账号',
     password: '密码',

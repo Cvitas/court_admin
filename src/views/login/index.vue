@@ -54,8 +54,8 @@ export default {
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('密码不能少于6位数字'))
+      if (value.length < 5) {
+        callback(new Error('密码不能少于5位数字'))
       } else {
         callback()
       }
@@ -89,7 +89,7 @@ export default {
           this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
             this.loading = false
             this.$router.push({ path: '/' })
-          }).catch(() => {
+          }).catch((err) => {
             this.loading = false
           })
         } else {

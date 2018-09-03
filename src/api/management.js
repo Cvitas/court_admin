@@ -36,7 +36,7 @@ export function getAllRoles() {
 }
 export function getExistRoleIds(query) {
   return request({
-    url: '/cms/user/GetExistRoleIds',
+    url: '/cms/user/getExistRoleIds',
     method: 'post',
     params: query
   })
@@ -90,6 +90,27 @@ export function addAction(data) {
     data
   })
 }
+export function getAllActions(query) {
+  return request({
+    url: 'cms/ActionGroup/getAllActions',
+    method: 'post',
+    params: query
+  })
+}
+export function getExistActionIds(query) {
+  return request({
+    url: 'cms/ActionGroup/getExistActionIds',
+    method: 'post',
+    params: query
+  })
+}
+export function setActions(query) {
+  return request({
+    url: 'cms/ActionGroup/SetActions',
+    method: 'post',
+    params: query
+  })
+}
 export function updateAction(data) {
   return request({
     url: '/cms/action/Update',
@@ -107,6 +128,27 @@ export function deleteActions(query) {
 export function getActionGroups(query) {
   return request({
     url: '/cms/actiongroup/Loadactiongroups',
+    method: 'post',
+    params: query
+  })
+}
+export function getAllGroups(query) {
+  return request({
+    url: 'cms/Role/getAllGroups',
+    method: 'post',
+    params: query
+  })
+}
+export function getExistGroupIds(query) {
+  return request({
+    url: 'cms/role/getExistGroupIds',
+    method: 'post',
+    params: query
+  })
+}
+export function setGroups(query) {
+  return request({
+    url: 'cms/Role/SetGroups',
     method: 'post',
     params: query
   })

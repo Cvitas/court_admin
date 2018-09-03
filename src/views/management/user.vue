@@ -38,7 +38,7 @@
       <el-table-column align="center" :label="$t('table.actions')" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('table.edit')}}</el-button>
-          <el-button v-if="scope.row.status!='published'" size="mini" type="success" @click="handleModifyStatus(scope.row,'bind')">{{$t('table.bind')}}
+          <el-button size="mini" type="success" @click="handleModifyStatus(scope.row,'bind')">{{$t('table.bind')}}
           </el-button>
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{$t('table.delete')}}
           </el-button>
@@ -214,20 +214,20 @@ export default {
         this.listLoading = false
       })
     },
-    getBindList(row){
+    getBindList(row) {
       this.listBindLoading = true
       switch (this.activeName) {
-        case "1" :
+        case '1' :
           getAllRoles().then(response => {
             this.roleList = response.data.result
             getExistRoleIds({ id: row.Id}).then(res => {
-              let rows = res.data.result.rows
-              rows.forEach((item)=>{
-                let selectRow = null;
-                this.roleList.forEach((r)=>{
-                    if(r.Id == item){
-                      selectRow = r;
-                    }
+              const rows = res.data.result.rows
+              rows.forEach((item) => {
+                let selectRow = null
+                this.roleList.forEach((r) => {
+                  if (r.Id === item) {
+                    selectRow = r
+                  }
                 })
                 selectRow && this.$refs.multipleTable1[0].toggleRowSelection(selectRow);
               })
@@ -235,9 +235,9 @@ export default {
             })
           })
           break
-        case "2" :
+        case '2' :
           break
-        case "3" :
+        case '3' :
           break
       }
     },
@@ -289,15 +289,15 @@ export default {
           break
       }
     },
-    handleSelectionChange(val){
-      this.multipleSelection = val;
+    handleSelectionChange(val) {
+      this.multipleSelection = val
     },
     bindConfirm() {
-      let roleIdsArr = this.multipleSelection.map((item)=>{
+      const roleIdsArr = this.multipleSelection.map((item) => {
         return item.Id
       })
-      setRole({hidId:this.temp.Id,roleIds:roleIdsArr.toString()}).then(response => {
-        this.dialogBindVisible = false;
+      setRole({ hidId: this.temp.Id, roleIds: roleIdsArr.toString() }).then(response => {
+        this.dialogBindVisible = false
         this.$notify({
           title: '成功',
           message: '绑定成功',

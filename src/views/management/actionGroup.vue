@@ -37,6 +37,7 @@
       <el-table-column align="center" :label="$t('table.actions')" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('table.edit')}}</el-button>
+          <el-button size="mini" type="success" @click="handleModifyStatus(scope.row,'bind')">{{$t('table.bind')}}</el-button>
           <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{$t('table.delete')}}
           </el-button>
         </template>
@@ -82,12 +83,44 @@
         <el-button type="primary" @click="dialogPvVisible = false">{{$t('table.confirm')}}</el-button>
       </span>
     </el-dialog>
-
+    <el-dialog :title="'权限绑定:'+temp.GroupName" :visible.sync="dialogBindVisible">
+      <el-tabs style='width: 100%' v-model="activeName" type="border-card">
+        <el-tab-pane v-for="item in bindOptions" :label="item.label" :key='item.key' :name="item.key">
+          <el-table ref="multipleTable1" :key='item.key' v-if="item.key == '1'" :data="actionList"
+                    v-loading="listBindLoading" border fit highlight-current-row
+                    @selection-change="handleSelectionChange"
+                    style="width: 100%;min-height:300px;">
+            <el-table-column
+              type="selection"
+              width="55">
+            </el-table-column>
+            <el-table-column align="center" :label="$t('table.id')" width="65">
+              <template slot-scope="scope">
+                <span>{{scope.row.Id}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column min-width="110px" align="center" :label="$t('table.groupname')">
+              <template slot-scope="scope">
+                <span>{{scope.row.GroupName}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column min-width="110px" align="center" :label="$t('table.grouptype')">
+              <template slot-scope="scope">
+                <span>{{scope.row.GroupType?"菜单权限组":"接口权限组"}}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+      </el-tabs>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="bindConfirm">{{$t('table.bind')}}</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import { getActionGroups, addActionGroup, deleteActionGroups, updateActionGroups } from '@/api/management'
+  import { getActionGroups, addActionGroup, deleteActionGroups, updateActionGroups, getAllActions, getExistActionIds, setActions } from '@/api/management'
   import waves from '@/directive/waves' // 水波纹指令
   import { parseTime } from '@/utils'
 
@@ -100,8 +133,10 @@
       return {
         tableKey: 0,
         list: null,
+        actionList: null,
         total: null,
         listLoading: true,
+        listBindLoading: true,
         listQuery: {
           page: 1,
           rows: 10,
@@ -109,6 +144,8 @@
           GroupType: null
         },
         groupOptions: [{ label: '菜单权限组', key: 1 }, { label: '接口权限组', key: 0 }],
+        bindOptions: [{ label: '绑定权限', key: '1' }],
+        activeName: '1',
         temp: {
           Id: '',
           GroupName: '',
@@ -116,6 +153,7 @@
           Sort: 0
         },
         dialogFormVisible: false,
+        dialogBindVisible: false,
         dialogStatus: '',
         textMap: {
           update: '编辑权限组',
@@ -138,12 +176,35 @@
         getActionGroups(this.listQuery).then(response => {
           this.list = response.data.result.rows
           this.total = response.data.result.total
-
-          // Just to simulate the time of the request
-          setTimeout(() => {
-            this.listLoading = false
-          }, 1.5 * 1000)
+          this.listLoading = false
         })
+      },
+      getBindList(row) {
+        this.listBindLoading = true
+        switch (this.activeName) {
+          case '1' :
+            getAllActions().then(response => {
+              this.actionList = response.data.result
+              getExistActionIds({ id: row.Id }).then(res => {
+                const rows = res.data.result.rows
+                rows.forEach((item) => {
+                  let selectRow = null
+                  this.actionList.forEach((r) => {
+                    if (r.Id === item) {
+                      selectRow = r
+                    }
+                  })
+                  selectRow && this.$refs.multipleTable1[0].toggleRowSelection(selectRow)
+                })
+                this.listBindLoading = false
+              })
+            })
+            break
+          case '2' :
+            break
+          case '3' :
+            break
+        }
       },
       handleFilter() {
         this.listQuery.page = 1
@@ -162,7 +223,29 @@
           case 'deleted':
             this.handleDelete(row)
             break
+          case 'bind':
+            this.temp = Object.assign({}, row)
+            this.dialogBindVisible = true
+            this.getBindList(row)
+            break
         }
+      },
+      handleSelectionChange(val) {
+        this.multipleSelection = val
+      },
+      bindConfirm() {
+        const actionIdsArr = this.multipleSelection.map((item) => {
+          return item.Id
+        })
+        setActions({ hidId: this.temp.Id,actionIds: actionIdsArr.toString()}).then(response => {
+          this.dialogBindVisible = false
+          this.$notify({
+            title: '成功',
+            message: '绑定成功',
+            type: 'success',
+            duration: 2000
+          })
+        })
       },
       resetTemp() {
         this.temp = {
