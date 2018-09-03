@@ -101,7 +101,9 @@
     <el-dialog :title="'用户绑定:'+temp.UserName" :visible.sync="dialogBindVisible">
       <el-tabs style='width: 100%' v-model="activeName" type="border-card">
         <el-tab-pane v-for="item in bindOptions" :label="item.label" :key='item.key' :name="item.key">
-          <el-table ref="multipleTable1" :key='item.key' v-if="item.key == '1'" :data="roleList" v-loading="listBindLoading" border fit highlight-current-row
+          <el-table ref="multipleTable1" :key='item.key' v-if="item.key == '1'" :data="roleList"
+                    v-loading="listBindLoading" border fit highlight-current-row
+                    @selection-change="handleSelectionChange"
                     style="width: 100%;min-height:300px;">
             <el-table-column
               type="selection"
@@ -126,7 +128,7 @@
         </el-tab-pane>
       </el-tabs>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogBindVisible = false">{{$t('table.bind')}}</el-button>
+        <el-button type="primary" @click="bindConfirm">{{$t('table.bind')}}</el-button>
       </span>
     </el-dialog>
 
@@ -134,7 +136,7 @@
 </template>
 
 <script>
-import { getUsers, addUsers, deleteUsers, updateUsers, getAllRoles, getExistRoleIds } from '@/api/management'
+import { getUsers, addUsers, deleteUsers, updateUsers, getAllRoles, getExistRoleIds, setRole } from '@/api/management'
 import waves from '@/directive/waves' // 水波纹指令
 import { parseTime } from '@/utils'
 
@@ -151,9 +153,9 @@ export default {
       actionList: null,
       actionGroupList: null,
       total: null,
-      bindTotal: null,
       listLoading: true,
       listBindLoading: true,
+      multipleSelection: [],
       listQuery: {
         page: 1,
         rows: 10,
@@ -209,11 +211,7 @@ export default {
       getUsers(this.listQuery).then(response => {
         this.list = response.data.result.rows
         this.total = response.data.result.total
-
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
+        this.listLoading = false
       })
     },
     getBindList(row){
@@ -221,10 +219,19 @@ export default {
       switch (this.activeName) {
         case "1" :
           getAllRoles().then(response => {
-            this.roleList = response.data.result.rows
-            this.bindTotal = response.data.result.total
-            this.listBindLoading = false
-            getExistRoleIds({ id: row.Id}).then(response => {
+            this.roleList = response.data.result
+            getExistRoleIds({ id: row.Id}).then(res => {
+              let rows = res.data.result.rows
+              rows.forEach((item)=>{
+                let selectRow = null;
+                this.roleList.forEach((r)=>{
+                    if(r.Id == item){
+                      selectRow = r;
+                    }
+                })
+                selectRow && this.$refs.multipleTable1[0].toggleRowSelection(selectRow);
+              })
+              this.listBindLoading = false
             })
           })
           break
@@ -281,6 +288,23 @@ export default {
           this.getBindList(row)
           break
       }
+    },
+    handleSelectionChange(val){
+      this.multipleSelection = val;
+    },
+    bindConfirm() {
+      let roleIdsArr = this.multipleSelection.map((item)=>{
+        return item.Id
+      })
+      setRole({hidId:this.temp.Id,roleIds:roleIdsArr.toString()}).then(response => {
+        this.dialogBindVisible = false;
+        this.$notify({
+          title: '成功',
+          message: '绑定成功',
+          type: 'success',
+          duration: 2000
+        })
+      })
     },
     resetTemp() {
       this.temp = {
